@@ -1,0 +1,51 @@
+Respuestas:
+
+    1 —
+
+class Lugar{
+
+	const property personas = #{}
+
+	method unMayorDeEdad()= self.mayoresDeEdad().take(1)
+
+	method mayoresDeEdad()= self.personas().filter({persona=>persona.sosMayorDeEdad()})
+
+}
+
+class Persona{
+
+	var property edad
+
+  method sosMayorDeEdad()=self.edad()>=18
+
+}
+
+    2 —
+
+class Persona{
+  // ...
+  method envejece(anios)=self.edad(self.edad()+anios)
+
+}
+
+class Lugar{
+  // ...
+  method envejecer(anios) = self.personas().forEach({persona=>persona.envejece(anios)})
+
+}
+
+    Obs.:El diagrama de clases esta como imagen adjuntado en la carpeta.
+
+    La principal diferencia es la mutabilidad de nuestras entidades, en Haskell hay transparencia referencial, provocando sin importar que funcion apliquemos sobre nuestras entidades nunca se veran modificadas, en cambio en Wollok si. Otra diferencia que existe entre ambas soluciones es que, en Wollok, no contamos con aplicacion parcial, es decir, como es un paradigma cuyo enfoque es otro (Haskell es un lenguaje orientado a funciones, Wollok es orientado a objetos) no podemos componer funciones, podemos enviar mensajes y recibir respuestas de los objetos. Sin embargo un concepto que aparece en ambos paradigas, es el orden superior.
+
+    3 — Si, es posible. El metodo de la clase "Lugar" recibe una persona, ya sea normal o no normal, y la envejece sin importar su tipo, es decir, se utiliza el concepto de polimorfismo para que las responsabilidades de cada clase se encuentren bien determinadas (el "Lugar" no deberia romper el encapsulamiento de una persona y poder envejecerla segun su tipo).
+
+class PersonaNoNormal inherits Persona{
+
+  override method envejece(anios)=super(anios*2)
+
+}
+
+    4 — a) Seria una clase que herede de "Persona". Le preguntaria al cliente de que forma envejecera la persona cuyo tipo no esta abarcado. Si la respuesta del mismo, es que solo cambiara el numero de años envejecidos, entonces cambiaria la solucion para utilizar el concepto de composicion y que la clase "Persona", en vez de subdividirse en multiples clases que hereden de una superclase, tenga su tipo; si cambia completamente el calculo del mismo, entonces crearia otra subclase que herede de una clase abstracta y sobreescriba el metodo "envejecé".
+
+    b) No hay que modificarlo ya que, como se dijo anter, se utiliza el polimorfismo, es decir, el "Lugar" no toma la responsabilidad de envejecer a las personas segun su tipo, sino que las trata indistintamente. 
