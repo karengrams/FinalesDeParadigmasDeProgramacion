@@ -1,0 +1,46 @@
+Respuestas:
+
+    1 —
+        a) Falso. En la clase "Producto", se tiene un metodo llamado "esInteresante" que toma responsabilidades, como saber si una serie tiene cuatro o cinco temporadas, que no deberia tener.
+        b) Falso. Se trata de forma especifica segun el tipo de producto, ocasionando un bajo de nivel de polimorfismo, y un alto nivel de acoplamiento.
+        c) Falso. Se deberia agregar codigo cuya logica se repetira ya que no trata de forma indistinta el tipo de los productos (polimorfismo).
+        d) Falso. Si bien, no se puede aprovechar el uso de la herencia, no es porque no haya logica repetida, sino porque dentro del metodo esInteresante(), se hace distincion de los tipos de productos que hay, provocando que la herencia resulte innecesaria.
+
+    2 —
+
+class Producto{
+  //...
+
+  method sosDeficitario() = self.costo()>100000 && self.fechaDeEstreno().plusYear(1)< new Date()
+
+  method esInteresante()
+
+}
+
+class Serie inherits Producto{
+  const property cantidadTemporadas
+
+  override method esInteresante() = self.cantidadTemporadas() == 4 or self.cantidadTemporadas()==5
+
+}
+
+class Pelicula inherits Producto{
+  var property ganoOscar = false
+
+  override method esInteresante()=self.ganoOscar()
+
+}
+
+class Documental inherits Producto{
+  //...
+
+  override method esInteresante()=self.tieneTituloNoOficial()
+
+}
+
+class Cliente{
+  //...
+
+  method esVentajero()= self.productos().all({producto=>producto.sosDeficitario()})
+
+}
